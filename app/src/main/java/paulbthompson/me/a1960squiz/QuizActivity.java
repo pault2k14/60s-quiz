@@ -31,6 +31,10 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // TODO Show the current and total questions.
+        // TODO Add a leaderboard.
+        // TODO Fix UI problems.
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
