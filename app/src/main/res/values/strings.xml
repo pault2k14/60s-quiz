@@ -1,29 +1,13 @@
 <resources>
     <string name="app_name">1960s Quiz</string>
-    <string name="question_1">Who was the father of LSD?</string>
-    <string name="question_1_choice_1">Timothy Leary</string>
-    <string name="question_1_choice_2">Albert Hofmann</string>
-    <string name="question_1_choice_3">Aldous Huxley</string>
-    <string name="question_1_choice_4">Denis Leary</string>
-    <string name="question_1_correct_answer">Albert Hofmann</string>
-    <string name="question_2">Who assassinated Robert F. Kennedy?</string>
-    <string name="question_2_choice_1">Lee Harvey Oswald</string>
-    <string name="question_2_choice_2">Joseph Stalin</string>
-    <string name="question_2_choice_3">Sirhan Sirhan</string>
-    <string name="question_2_choice_4">No one knows</string>
-    <string name="question_2_correct_answer">Sirhan Sirhan</string>
+    <string name="title_activity_sign_in">Sign-in</string>
+    <string name="sign_in_succeeded_message_format">"Sign-in with %s succeeded."</string>
+    <string name="sign_in_canceled_message_format">"Sign-in with %s canceled."</string>
+    <string name="sign_in_failure_dialog_title">Sign-In Error</string>
+    <string name="sign_in_failure_message_format">Sign-in with %1$s failed.\n%2$s</string>
+    <string name="sign_in_or">or sign in with</string>
 
 
-    <string name="question_australia">Canberra is the capital of Australia</string>
-    <string name="question_oceans">The Pacific Ocean is larger than
-    the Atlantic Ocean.</string>
-    <string name="question_mideast">The Suez Canal connects the Red Sea
-    and the Indian Ocean.</string>
-    <string name="question_africa">The source of the Nile River is in Eygpt.</string>
-    <string name="question_americas">The Amazon River is the longest river
-    in the Americas.</string>
-    <string name="question_asia">Lake Baikal is the world\'s oldest and deepest
-    freshwater lake.</string>
     <string name="true_button">True</string>
     <string name="false_button">False</string>
     <string name="next_button">Next</string>
