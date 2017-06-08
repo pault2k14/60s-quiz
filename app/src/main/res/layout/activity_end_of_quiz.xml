@@ -24,6 +24,20 @@
             android:text=""
             android:textSize="40sp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leaderboard_text"
+            android:text="High Scores"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leaderboard"
+            android:text=""
+            android:textSize="10sp"/>
+
         <Button
             android:id="@+id/restart_button"
             android:layout_width="wrap_content"
