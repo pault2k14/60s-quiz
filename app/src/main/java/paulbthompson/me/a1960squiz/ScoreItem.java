@@ -20,7 +20,7 @@ public class ScoreItem {
     }
 
 
-    @DynamoDBAttribute(attributeName = "score")
+    @DynamoDBRangeKey(attributeName = "score")
     public int getScore() {
         return score;
     }

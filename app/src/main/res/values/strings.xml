@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">1960s Quiz</string>
+    <string name="app_name">Quizzing with the 60s</string>
     <string name="title_activity_sign_in">Sign-in</string>
     <string name="sign_in_succeeded_message_format">"Sign-in with %s succeeded."</string>
     <string name="sign_in_canceled_message_format">"Sign-in with %s canceled."</string>

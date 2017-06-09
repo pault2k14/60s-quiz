@@ -1,5 +1,6 @@
 package paulbthompson.me.a1960squiz;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
     private static final String KEY_CHEATER = "cheater";
+    private static final String KEY_SCORE = "score";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mChoice1Button;
@@ -41,6 +43,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mCurrentScore = savedInstanceState.getInt(KEY_SCORE, 0);
             mIsCheater = savedInstanceState.getBoolean(KEY_CHEATER, false);
         }
 
@@ -123,6 +126,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putInt(KEY_SCORE, mCurrentScore);
         savedInstanceState.putBoolean(KEY_CHEATER, mIsCheater);
     }
 
@@ -142,7 +146,7 @@ public class QuizActivity extends AppCompatActivity {
         checkMultiChoiceAnswer(choiceButton.getText().toString());
 
         if(!mMultiQuestionBank.isNextQuestion()) {
-            Intent intent = EndOfQuizActivity.newIntent(QuizActivity.this, mCurrentScore);
+            Intent intent = UserNameInputActivity.newIntent(QuizActivity.this, mCurrentScore);
             startActivity(intent);
             return;
         }
@@ -160,7 +164,6 @@ public class QuizActivity extends AppCompatActivity {
         mChoice2Button.setText(mMultiQuestionBank.getChoice2Text());
         mChoice3Button.setText(mMultiQuestionBank.getChoice3Text());
         mChoice4Button.setText(mMultiQuestionBank.getChoice4Text());
-
 
     }
 
@@ -188,5 +191,11 @@ public class QuizActivity extends AppCompatActivity {
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    public static Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, QuizActivity.class);
+        return intent;
+
     }
 }

@@ -57,9 +57,8 @@
                     android:background="#0091EA"
                     android:textColor="#fff"
                     android:padding="8dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:text=""
-                    android:drawableRight="@drawable/arrow_right"
                     android:drawablePadding="4dp"/>
 
                 <Button
@@ -69,9 +68,8 @@
                     android:background="#0091EA"
                     android:textColor="#fff"
                     android:padding="8dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:text=""
-                    android:drawableRight="@drawable/arrow_right"
                     android:drawablePadding="4dp"/>
 
                 <Button
@@ -81,9 +79,8 @@
                     android:background="#0091EA"
                     android:textColor="#fff"
                     android:padding="8dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:text=""
-                    android:drawableRight="@drawable/arrow_right"
                     android:drawablePadding="4dp"/>
 
                 <Button
@@ -93,9 +90,8 @@
                     android:background="#0091EA"
                     android:textColor="#fff"
                     android:padding="8dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:text=""
-                    android:drawableRight="@drawable/arrow_right"
                     android:drawablePadding="4dp"/>
 
             </LinearLayout>
