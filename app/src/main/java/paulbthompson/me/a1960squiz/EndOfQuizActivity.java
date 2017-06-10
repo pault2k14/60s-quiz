@@ -2,11 +2,15 @@ package paulbthompson.me.a1960squiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobile.AWSMobileClient;
@@ -17,6 +21,7 @@ import com.amazonaws.services.dynamodbv2.model.*;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +34,8 @@ public class EndOfQuizActivity extends AppCompatActivity {
             "paulbthompson.me.a1960squiz.first_name";
     private static final String EXTRA_LAST_NAME =
             "paulbthompson.me.a1960squiz.last_name";
+    private static final String EXTRA_ALL_SCORES =
+            "paulbthompson.me.a1960squiz.all_scores";
     private int mCurrentScore;
     private String mFirstName;
     private String mLastName;
@@ -37,6 +44,7 @@ public class EndOfQuizActivity extends AppCompatActivity {
     private TextView mLeaderBoardTextView;
     private DynamoDBMapper mapper;
     private PaginatedScanList<ScoreItem> scores;
+    private ArrayList<ScoreItem> mScoreItems;
     private String highScores = "";
 
     @Override
@@ -53,11 +61,12 @@ public class EndOfQuizActivity extends AppCompatActivity {
         mCurrentScore = getIntent().getIntExtra(EXTRA_CURRENT_SCORE, 0);
         mFirstName = getIntent().getStringExtra(EXTRA_FIRST_NAME);
         mLastName = getIntent().getStringExtra(EXTRA_LAST_NAME);
+        mScoreItems = getIntent().getParcelableArrayListExtra(EXTRA_ALL_SCORES);
         mScoreTextView = (TextView) findViewById(R.id.score);
         mScoreTextView.setText(String.valueOf(mCurrentScore));
         mLeaderBoardTextView = (TextView) findViewById(R.id.leaderboard);
 
-        getAllScores();
+        init();
 
         mRestartButton.setOnClickListener(new View.OnClickListener() {
 
@@ -68,6 +77,48 @@ public class EndOfQuizActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void init() {
+        TableLayout stk = (TableLayout) findViewById(R.id.table_main);
+        TableRow tbrow0 = new TableRow(this);
+        TextView tv0 = new TextView(this);
+        tv0.setText(" No. ");
+        tv0.setTextColor(Color.WHITE);
+        tbrow0.addView(tv0);
+        TextView tv1 = new TextView(this);
+        tv1.setText(" Name ");
+        tv1.setTextColor(Color.WHITE);
+        tbrow0.addView(tv1);
+        TextView tv2 = new TextView(this);
+        tv2.setText(" Score ");
+        tv2.setTextColor(Color.WHITE);
+        tbrow0.addView(tv2);
+        stk.addView(tbrow0);
+        int i = 0;
+        for (ScoreItem item : mScoreItems) {
+            TableRow tbrow = new TableRow(this);
+            TextView t1v = new TextView(this);
+            t1v.setText("" + i);
+            t1v.setTextColor(Color.WHITE);
+            t1v.setGravity(Gravity.CENTER);
+            tbrow.addView(t1v);
+            TextView t2v = new TextView(this);
+            t2v.setText(item.getFirstName() + " " + item.getLastName());
+            t2v.setTextColor(Color.WHITE);
+            t2v.setGravity(Gravity.CENTER);
+            tbrow.addView(t2v);
+            TextView t3v = new TextView(this);
+            t3v.setText(item.getScore());
+            t3v.setTextColor(Color.WHITE);
+            t3v.setGravity(Gravity.CENTER);
+            tbrow.addView(t3v);
+            stk.addView(tbrow);
+            ++i;
+        }
+
+    }
+
 
     public void addScore() {
 
@@ -124,11 +175,12 @@ public class EndOfQuizActivity extends AppCompatActivity {
         mythread.start();
     }
 
-    public static Intent newIntent(Context packageContext, int currentScore, String firstName, String lastName) {
+    public static Intent newIntent(Context packageContext, int currentScore, String firstName, String lastName, ArrayList<ScoreItem> allScores) {
         Intent intent = new Intent(packageContext, EndOfQuizActivity.class);
         intent.putExtra(EXTRA_CURRENT_SCORE, currentScore);
         intent.putExtra(EXTRA_FIRST_NAME, firstName);
         intent.putExtra(EXTRA_LAST_NAME, lastName);
+        intent.putParcelableArrayListExtra(EXTRA_ALL_SCORES, allScores);
 
         return intent;
     }
