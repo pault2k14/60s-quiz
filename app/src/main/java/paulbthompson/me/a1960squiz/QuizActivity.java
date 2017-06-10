@@ -26,6 +26,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mChoice4Button;
     private TextView mScoreTextView;
     private TextView mQuestionTextView;
+    private TextView mQuestionNumTextView;
     private QuestionBank mMultiQuestionBank = new QuestionBank();
     private int mCurrentIndex = 0;
     private int mCurrentScore = 0;
@@ -34,9 +35,8 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // TODO Show the current and total questions.
-        // TODO Add a leaderboard.
-        // TODO Fix UI problems.
+        // TODO Questions where you can more than one answer
+        // TODO  - choose all that apply.
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
@@ -46,7 +46,9 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentScore = savedInstanceState.getInt(KEY_SCORE, 0);
             mIsCheater = savedInstanceState.getBoolean(KEY_CHEATER, false);
         }
-
+        mQuestionNumTextView = (TextView) findViewById(R.id.question_num);
+        mQuestionNumTextView.setText("" + (1 + mMultiQuestionBank.getIndex()) + "/"
+        + mMultiQuestionBank.getSize());
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mScoreTextView = (TextView) findViewById(R.id.score);
         mChoice1Button = (Button) findViewById(R.id.choice1_button);
@@ -159,6 +161,8 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         // int question = mQuestionBank[mCurrentIndex].getTestResId();
         // mQuestionTextView.setText(question);
+        mQuestionNumTextView.setText("" + (1 + mMultiQuestionBank.getIndex()) + "/"
+                + mMultiQuestionBank.getSize());
         mQuestionTextView.setText(mMultiQuestionBank.getQuestionText());
         mChoice1Button.setText(mMultiQuestionBank.getChoice1Text());
         mChoice2Button.setText(mMultiQuestionBank.getChoice2Text());

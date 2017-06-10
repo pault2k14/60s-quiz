@@ -37,34 +37,20 @@ public class EndOfQuizActivity extends AppCompatActivity {
     private static final String EXTRA_ALL_SCORES =
             "paulbthompson.me.a1960squiz.all_scores";
     private int mCurrentScore;
-    private String mFirstName;
-    private String mLastName;
     private TextView mScoreTextView;
     private Button mRestartButton;
-    private TextView mLeaderBoardTextView;
-    private DynamoDBMapper mapper;
-    private PaginatedScanList<ScoreItem> scores;
     private ArrayList<ScoreItem> mScoreItems;
-    private String highScores = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_of_quiz);
 
-        AWSMobileClient.initializeMobileClientIfNecessary(getApplicationContext());
-        AWSMobileClient awsMobileClient = AWSMobileClient.defaultMobileClient();
-        AmazonDynamoDBClient ddbClient = awsMobileClient.getDynamoDBClient();
-        mapper = new DynamoDBMapper(ddbClient);
-
         mRestartButton = (Button) findViewById(R.id.restart_button);
         mCurrentScore = getIntent().getIntExtra(EXTRA_CURRENT_SCORE, 0);
-        mFirstName = getIntent().getStringExtra(EXTRA_FIRST_NAME);
-        mLastName = getIntent().getStringExtra(EXTRA_LAST_NAME);
         mScoreItems = getIntent().getParcelableArrayListExtra(EXTRA_ALL_SCORES);
         mScoreTextView = (TextView) findViewById(R.id.score);
         mScoreTextView.setText(String.valueOf(mCurrentScore));
-        mLeaderBoardTextView = (TextView) findViewById(R.id.leaderboard);
 
         init();
 
@@ -109,7 +95,7 @@ public class EndOfQuizActivity extends AppCompatActivity {
             t2v.setGravity(Gravity.CENTER);
             tbrow.addView(t2v);
             TextView t3v = new TextView(this);
-            t3v.setText(item.getScore());
+            t3v.setText("" + item.getScore());
             t3v.setTextColor(Color.WHITE);
             t3v.setGravity(Gravity.CENTER);
             tbrow.addView(t3v);
@@ -120,66 +106,9 @@ public class EndOfQuizActivity extends AppCompatActivity {
     }
 
 
-    public void addScore() {
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                //DynamoDB calls go here
-                ScoreItem scoreItem = new ScoreItem();
-                scoreItem.setFirstName(mFirstName);
-                scoreItem.setLastName(mLastName);
-                scoreItem.setScore(mCurrentScore);
-                mapper.save(scoreItem);
-            }
-        };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-    }
-
-    public void getAllScores() {
-
-        Runnable runnable = new Runnable() {
-            public void run() {
-                //DynamoDB calls go here
-
-                ScoreItem scoreItemToSave = new ScoreItem();
-                scoreItemToSave.setFirstName(mFirstName);
-                scoreItemToSave.setLastName(mLastName);
-                scoreItemToSave.setScore(mCurrentScore);
-                mapper.save(scoreItemToSave);
-
-                DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
-                DynamoDBMapperConfig config = new DynamoDBMapperConfig(DynamoDBMapperConfig.PaginationLoadingStrategy.EAGER_LOADING);
-                scores = mapper.scan(ScoreItem.class, dynamoDBScanExpression, config);
-
-                scores.loadAllResults();
-
-                Log.d(TAG, "scores.size()" + scores.size());
-
-                for(ScoreItem scoreItem : scores) {
-                    highScores += scoreItem.getFirstName() + " "
-                            + scoreItem.getLastName() + " "
-                            + scoreItem.getScore() + "\n";
-                }
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //stuff that updates ui
-                        mLeaderBoardTextView.setText(highScores);
-                    }
-                });
-            }
-        };
-        Thread mythread = new Thread(runnable);
-        mythread.start();
-    }
-
-    public static Intent newIntent(Context packageContext, int currentScore, String firstName, String lastName, ArrayList<ScoreItem> allScores) {
+    public static Intent newIntent(Context packageContext, int currentScore, ArrayList<ScoreItem> allScores) {
         Intent intent = new Intent(packageContext, EndOfQuizActivity.class);
         intent.putExtra(EXTRA_CURRENT_SCORE, currentScore);
-        intent.putExtra(EXTRA_FIRST_NAME, firstName);
-        intent.putExtra(EXTRA_LAST_NAME, lastName);
         intent.putParcelableArrayListExtra(EXTRA_ALL_SCORES, allScores);
 
         return intent;

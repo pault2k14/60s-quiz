@@ -3,5 +3,7 @@
     <color name="sign_in_separator_color">#DDDDDD</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="gray">#aaaaaa</color>
+    <color name="white">#000000</color>
     <color name="colorAccent">#FF4081</color>
 </resources>

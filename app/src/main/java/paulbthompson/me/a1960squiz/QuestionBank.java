@@ -133,6 +133,8 @@ public class QuestionBank {
         currentIndex = x;
     }
 
+    public int getSize() { return questionArray.length; };
+
     public String getQuestionText() {
         return questionArray[currentIndex].questionText;
     }

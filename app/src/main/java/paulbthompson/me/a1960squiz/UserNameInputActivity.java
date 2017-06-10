@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapperConfig;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedScanList;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +41,11 @@ public class UserNameInputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_name_input);
 
+        AWSMobileClient.initializeMobileClientIfNecessary(getApplicationContext());
+        AWSMobileClient awsMobileClient = AWSMobileClient.defaultMobileClient();
+        AmazonDynamoDBClient ddbClient = awsMobileClient.getDynamoDBClient();
+        mapper = new DynamoDBMapper(ddbClient);
+
         mCurrentScore = getIntent().getIntExtra(EXTRA_CURRENT_SCORE, 0);
 
         mSubmitButton = (Button)findViewById(R.id.submitButton);
@@ -60,13 +67,18 @@ public class UserNameInputActivity extends AppCompatActivity {
 
     public void updateAndgetAllScores() {
 
+        if(mFirstNameString == null || mFirstNameString.equals(""))
+            mFirstNameString = "Unknown";
+        if(mLastNameString == null || mLastNameString.equals(""))
+            mLastNameString = "Unknown";
+
+        if(mFirstNameString.equals("Unknown") && mLastNameString.equals("Unknown")) {
+            mLastNameString = " ";
+        }
+
         Runnable runnable = new Runnable() {
             public void run() {
                 //DynamoDB calls go here
-
-                if(mFirstNameString == null) mFirstNameString = "Unknown";
-                if(mLastNameString == null) mLastNameString = "Unknown";
-
                 ScoreItem scoreItemToSave = new ScoreItem();
                 scoreItemToSave.setFirstName(mFirstNameString);
                 scoreItemToSave.setLastName(mLastNameString);
@@ -89,12 +101,28 @@ public class UserNameInputActivity extends AppCompatActivity {
             Log.d(TAG, "Interrupted trying to rejoin threads!");
         }
 
-        ArrayList<ScoreItem> scoresArrayList = new ArrayList<>(Arrays.asList((ScoreItem[]) scores.toArray()));
+        int maxIndex = 0;
+        int maxScore = 0;
+        int arraylength = scores.size();
+        ArrayList<ScoreItem> scoreItemsArrayList = new ArrayList<>();
+        ArrayList<ScoreItem> scoresArray = new ArrayList<>();
+        scoresArray.addAll(scores);
+
+        for(int x = 0; x < arraylength; ++x) {
+            for (int i = 0; i < scoresArray.size(); ++i) {
+                if (scoresArray.get(i).getScore() > maxScore) {
+                    maxIndex = i;
+                    maxScore = scoresArray.get(i).getScore();
+                }
+            }
+            scoreItemsArrayList.add(scoresArray.remove(maxIndex));
+            maxIndex = 0;
+            maxScore = 0;
+        }
+
         Intent intent = EndOfQuizActivity.newIntent(UserNameInputActivity.this,
                 mCurrentScore,
-                mFirstNameString,
-                mLastNameString,
-                scoresArrayList);
+                scoreItemsArrayList);
         startActivity(intent);
     }
 
