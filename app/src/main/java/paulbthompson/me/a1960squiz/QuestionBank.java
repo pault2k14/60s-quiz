@@ -15,7 +15,7 @@ public class QuestionBank {
 
         for(int i = 0; i < mQuestion.length; i++) {
 
-            questionArray[i] = new MultipleChoiceQuestion(mQuestion[i], mChoices[i][0],
+            questionArray[i] = new MultipleChoiceQuestion(mQuestionIds[i], mQuestion[i], mChoices[i][0],
                     mChoices[i][1], mChoices[i][2], mChoices[i][3],
                     mCorrectAnswer[i]);
 
@@ -24,6 +24,12 @@ public class QuestionBank {
         currentIndex = 0;
     }
 
+
+    private String mQuestionIds [] = {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+            "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+            "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+    };
 
     private String mQuestion [] = {
             "Who was the father of LSD?",
@@ -136,27 +142,27 @@ public class QuestionBank {
     public int getSize() { return questionArray.length; };
 
     public String getQuestionText() {
-        return questionArray[currentIndex].questionText;
+        return questionArray[currentIndex].getQuestion();
     }
 
     public String getChoice1Text() {
-        return questionArray[currentIndex].choice1Text;
+        return questionArray[currentIndex].getAnswerOne();
     }
 
     public String getChoice2Text() {
-        return questionArray[currentIndex].choice2Text;
+        return questionArray[currentIndex].getAnswerTwo();
     }
 
     public String getChoice3Text() {
-        return questionArray[currentIndex].choice3Text;
+        return questionArray[currentIndex].getAnswerThree();
     }
 
     public String getChoice4Text() {
-        return questionArray[currentIndex].choice4Text;
+        return questionArray[currentIndex].getAnswerFour();
     }
 
     public String getCorrectChoiceText() {
-        return questionArray[currentIndex].correctChoiceText;
+        return questionArray[currentIndex].getCorrectAnswer();
     }
 
     public void nextQuestion() {

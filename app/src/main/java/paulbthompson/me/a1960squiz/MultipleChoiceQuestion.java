@@ -6,87 +6,80 @@ package paulbthompson.me.a1960squiz;
 
 public class MultipleChoiceQuestion {
 
-    public String questionText;
-    public String choice1Text;
-    public String choice2Text;
-    public String choice3Text;
-    public String choice4Text;
-    public String correctChoiceText;
-    private static int currentIndex;
-    private static MultipleChoiceQuestion[] questionArray;
+    private String questionId;
+    private String question;
+    private String answerOne;
+    private String answerTwo;
+    private String answerThree;
+    private String answerFour;
+    private String correctAnswer;
 
-    public MultipleChoiceQuestion(String questionText, String choice1Text,
-                                  String choice2Text, String choice3Text,
-                                  String choice4Text, String correctChoiceText) {
+    public MultipleChoiceQuestion(String questionId, String question, String answerOne,
+                                  String answerTwo, String answerThree,
+                                  String answerFour, String correctAnswer) {
 
-        this.questionText = questionText;
-        this.choice1Text = choice1Text;
-        this.choice2Text = choice2Text;
-        this.choice3Text = choice3Text;
-        this.choice4Text = choice4Text;
-        this.correctChoiceText = correctChoiceText;
+        this.questionId = questionId;
+        this.question = question;
+        this.answerOne = answerOne;
+        this.answerTwo = answerTwo;
+        this.answerThree = answerThree;
+        this.answerFour = answerFour;
+        this.correctAnswer = correctAnswer;
     }
 
-    public static MultipleChoiceQuestion[] createQuestionBank() {
-
-        questionArray = new MultipleChoiceQuestion[2];
-
-        for(int i = 0; i < 2; i++) {
-
-            questionArray[i] = new MultipleChoiceQuestion(mQuestion[i], mChoices[i][0],
-                    mChoices[i][1], mChoices[i][2], mChoices[i][3],
-                    mCorrectAnswer[i]);
-
-        }
-
-        currentIndex = 0;
-        return questionArray;
+    public String getQuestionId() {
+        return questionId;
     }
 
-    private static String mQuestion [] = {
-            "Who was the father of LSD?",
-            "Who assassinated Robert F. Kennedy?"
-    };
-
-    private static String mChoices [][] = {
-            {"Timothy Leary", "Albert Hofmann", "Aldous Huxley", "Denis Leary"},
-            {"Lee Harvey Oswald", "Joseph Stalin", "Sirhan Sirhan", "No one knows"}
-    };
-
-    private static String mCorrectAnswer [] = {
-            "Albert Hofmann", "Sirhan Sirhan"
-    };
-
-    public static String getQuestion() {
-        return questionArray[currentIndex].questionText;
+    public void setQuestionId(String questionId) {
+        this.questionId = questionId;
     }
 
-    public static String getChoice1() {
-        return questionArray[currentIndex].choice1Text;
+    public String getQuestion() {
+        return question;
     }
 
-    public static String getChoice2() {
-        return questionArray[currentIndex].choice2Text;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public static String getChoice3() {
-        return questionArray[currentIndex].choice3Text;
+    public String getAnswerOne() {
+        return answerOne;
     }
 
-    public static String getChoice4() {
-        return questionArray[currentIndex].choice4Text;
+    public void setAnswerOne(String answerOne) {
+        this.answerOne = answerOne;
     }
 
-    public static String getCorrectAnswer() {
-        return questionArray[currentIndex].correctChoiceText;
+    public String getAnswerTwo() {
+        return answerTwo;
     }
 
-    public static void setIndex(int x) {
-        currentIndex = x;
+    public void setAnswerTwo(String answerTwo) {
+        this.answerTwo = answerTwo;
     }
 
-    public static int getIndex() {
-        return currentIndex;
+    public String getAnswerThree() {
+        return answerThree;
     }
 
+    public void setAnswerThree(String answerThree) {
+        this.answerThree = answerThree;
+    }
+
+    public String getAnswerFour() {
+        return answerFour;
+    }
+
+    public void setAnswerFour(String answerFour) {
+        this.answerFour = answerFour;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 }

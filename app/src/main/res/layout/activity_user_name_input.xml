@@ -83,11 +83,18 @@
         android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
         android:layout_marginTop="20dp"
         android:background="#0099FF"
         android:text="Submit"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#0099FF"
+        android:text="Don't submit a name"
         android:textColor="#FFFFFF" />
 
 </LinearLayout>

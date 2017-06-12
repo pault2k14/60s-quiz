@@ -3,9 +3,12 @@ package paulbthompson.me.a1960squiz;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +41,7 @@ public class EndOfQuizActivity extends AppCompatActivity {
             "paulbthompson.me.a1960squiz.all_scores";
     private int mCurrentScore;
     private TextView mScoreTextView;
+    private TextView mLeaderboardText;
     private Button mRestartButton;
     private ArrayList<ScoreItem> mScoreItems;
 
@@ -51,8 +55,15 @@ public class EndOfQuizActivity extends AppCompatActivity {
         mScoreItems = getIntent().getParcelableArrayListExtra(EXTRA_ALL_SCORES);
         mScoreTextView = (TextView) findViewById(R.id.score);
         mScoreTextView.setText(String.valueOf(mCurrentScore));
+        mLeaderboardText = (TextView) findViewById(R.id.leaderboard_text);
 
-        init();
+        if(isNetworkAvailable()) {
+            init();
+        }
+        else {
+            mLeaderboardText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            mLeaderboardText.setText("Enable internet access to view the leaderboard.");
+        }
 
         mRestartButton.setOnClickListener(new View.OnClickListener() {
 
@@ -85,7 +96,7 @@ public class EndOfQuizActivity extends AppCompatActivity {
         for (ScoreItem item : mScoreItems) {
             TableRow tbrow = new TableRow(this);
             TextView t1v = new TextView(this);
-            t1v.setText("" + i);
+            t1v.setText("" + (i + 1));
             t1v.setTextColor(Color.WHITE);
             t1v.setGravity(Gravity.CENTER);
             tbrow.addView(t1v);
@@ -105,6 +116,12 @@ public class EndOfQuizActivity extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     public static Intent newIntent(Context packageContext, int currentScore, ArrayList<ScoreItem> allScores) {
         Intent intent = new Intent(packageContext, EndOfQuizActivity.class);

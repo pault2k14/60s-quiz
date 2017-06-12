@@ -2,6 +2,9 @@ package paulbthompson.me.a1960squiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +31,7 @@ public class UserNameInputActivity extends AppCompatActivity {
             "paulbthompson.me.a1960squiz.current_score";
     private int mCurrentScore;
     private Button mSubmitButton;
+    private Button mCancelButton;
     private EditText mFirstName;
     private EditText mLastName;
     private String mFirstNameString;
@@ -49,12 +53,14 @@ public class UserNameInputActivity extends AppCompatActivity {
         mCurrentScore = getIntent().getIntExtra(EXTRA_CURRENT_SCORE, 0);
 
         mSubmitButton = (Button)findViewById(R.id.submitButton);
-
+        mCancelButton = (Button)findViewById(R.id.cancelButton);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                mSubmitButton.setBackgroundColor(Color.GRAY);
+                mSubmitButton.setClickable(false);
                 mFirstName = (EditText)findViewById(R.id.firstName);
                 mFirstNameString = mFirstName.getText().toString();
                 mLastName = (EditText)findViewById(R.id.lastName);
@@ -62,8 +68,21 @@ public class UserNameInputActivity extends AppCompatActivity {
                 updateAndgetAllScores();
             }
         });
-    }
 
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                mCancelButton.setBackgroundColor(Color.GRAY);
+                mCancelButton.setClickable(false);
+                mFirstName = (EditText)findViewById(R.id.firstName);
+                mFirstNameString = "Unknown";
+                mLastName = (EditText)findViewById(R.id.lastName);
+                mLastNameString = "Unknown";
+                updateAndgetAllScores();
+            }
+        });
+    }
 
     public void updateAndgetAllScores() {
 

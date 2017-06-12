@@ -2,6 +2,8 @@ package paulbthompson.me.a1960squiz;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import static android.R.attr.data;
 
@@ -35,8 +39,13 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // TODO Questions where you can more than one answer
+        // TODO Questions where you can choose more than one answer
         // TODO  - choose all that apply.
+        // TODO Change First Name and Last Name to just initials
+        // TODO Change question / answer storage to local nosql.
+        // TODO Add spinner to user input activity
+        // TODO setup database online w/ Updated datetime in question
+        // TODO - and a deleted_yn field.
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
@@ -89,6 +98,13 @@ public class QuizActivity extends AppCompatActivity {
         });
 
         updateQuestion();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
@@ -148,9 +164,19 @@ public class QuizActivity extends AppCompatActivity {
         checkMultiChoiceAnswer(choiceButton.getText().toString());
 
         if(!mMultiQuestionBank.isNextQuestion()) {
-            Intent intent = UserNameInputActivity.newIntent(QuizActivity.this, mCurrentScore);
-            startActivity(intent);
-            return;
+            if(isNetworkAvailable()) {
+                Intent intent = UserNameInputActivity.newIntent(
+                        QuizActivity.this, mCurrentScore);
+                startActivity(intent);
+                return;
+            }
+            else {
+                ArrayList<ScoreItem> emptyScoreItems = new ArrayList<>();
+                Intent intent = EndOfQuizActivity.newIntent(
+                        QuizActivity.this, mCurrentScore, emptyScoreItems);
+                startActivity(intent);
+                return;
+            }
         }
 
         mMultiQuestionBank.nextQuestion();
@@ -159,8 +185,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
-        // int question = mQuestionBank[mCurrentIndex].getTestResId();
-        // mQuestionTextView.setText(question);
+
         mQuestionNumTextView.setText("" + (1 + mMultiQuestionBank.getIndex()) + "/"
                 + mMultiQuestionBank.getSize());
         mQuestionTextView.setText(mMultiQuestionBank.getQuestionText());
